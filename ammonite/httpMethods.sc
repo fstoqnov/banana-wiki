@@ -126,6 +126,35 @@ object Test {
                  ).get,
        keyChain = List(cosyKey,localKey)
    )
+   
+   //----------------------------------------------------------------------------------------------
 
+   def deleteLocalKey = http.run(
+     req      = DELETE[`text/turtle`](
+                  resource = Uri("https://localhost:8443/2013/")
+                )
+   )
+
+   def getLocalKey = http.run(
+      req     = GETpg(
+                  uri = Uri("https://localhost:8443/2013/"),
+                  keyChain = List(localKey)
+     )
+   )
+
+   def putLocalKey = http.run(
+     req      = PUT[`text/turtle`](
+                  resource = Uri("https://localhost:8443/2013/"),
+                  graph    = pubKeyPG.get.graph
+                ).get,
+     keyChain = List(localKey)
+   )
+
+   def patchLocal(sparqlUpdateCommand: String) = http.run(
+     req      = PATCHsparql[`text/turtle`](
+                  resource = Uri("https://localhost:8443/2013/"),
+                  sparqlUpdate = sparqlUpdateCommand
+                )
+   )
 
 }
